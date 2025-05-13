@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IconFolderDown } from "@tabler/icons-react";
 import ReactApexChart from "react-apexcharts";
 
@@ -12,7 +12,7 @@ const ApexChart = ({ title, type }) => {
         type: isDonut ? "donut" : "bar",
         width: 250,
       },
-      labels: isDonut ? ["Subsribers", "Non Subsribers"] : undefined,
+      labels: isDonut ? ["Subscribers", "Non Subscribers"] : undefined,
       colors: isDonut ? ["#344BFD", "#F68D2B"] : ["#007BFF"],
       plotOptions: isDonut
         ? {}
@@ -55,8 +55,6 @@ const TableComponent = ({ title, data }) => {
   return (
     <div className="bg-white rounded-md shadow-lg w-full">
       <h3 className="text-lg font-semibold mb-2 text-center bg-[#D9EBFF]">{title}</h3>
-
-      {/* Set fixed height for the scrollable area only */}
       <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
         <table className="w-full border-collapse">
           <thead className="sticky top-0 bg-white">
@@ -72,8 +70,8 @@ const TableComponent = ({ title, data }) => {
               <tr key={index} className="border-b border-gray-300">
                 <td className="py-2 px-4">{index + 1}</td>
                 <td className="py-2">{item.name}</td>
-                <td className="py-2">{item.phone}</td>
-                <td className="py-2 text-green-600">{item.plan}</td>
+                <td className="py-2">{item.phoneNumber}</td>
+                <td className="py-2 text-green-600">{item.plan || "N/A"}</td>
               </tr>
             ))}
           </tbody>
@@ -83,29 +81,17 @@ const TableComponent = ({ title, data }) => {
   );
 };
 
-
-
 function Cards() {
-  const recentUsers = [
-    { name: "John Doe", plan: "Premium", phone: "9876543210" },
-    { name: "Jane Smith", plan: "Basic", phone: "8765432109" },
-    { name: "Alice Brown", plan: "Standard", phone: "7654321098" },
-    { name: "John Doe", plan: "Premium", phone: "9876543210" },
-    { name: "Jane Smith", plan: "Basic", phone: "8765432109" },
-    { name: "Alice Brown", plan: "Standard", phone: "7654321098" },
-    { name: "John Doe", plan: "Premium", phone: "9876543210" },
-    { name: "Jane Smith", plan: "Basic", phone: "8765432109" },
-    { name: "Alice Brown", plan: "Standard", phone: "7654321098" },
-    { name: "John Doe", plan: "Premium", phone: "9876543210" },
-    { name: "Jane Smith", plan: "Basic", phone: "8765432109" },
-    { name: "Alice Brown", plan: "Standard", phone: "7654321098" },
-  ];
+  const [users, setUsers] = useState([]);
 
-  const recentSearches = [
-    { name: "Michael Scott", plan: "Basic", phone: "6543210987" },
-    { name: "Dwight Schrute", plan: "Standard", phone: "5432109876" },
-    { name: "Jim Halpert", plan: "Premium", phone: "4321098765" },
-  ];
+  useEffect(() => {
+    fetch("https://tmpapi.onrender.com/users/getall")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data); // Ensure data is in the expected format
+      })
+      .catch((err) => console.error("Failed to fetch users:", err));
+  }, []);
 
   return (
     <div className="h-[calc(100vh-80px)] overflow-y-auto pr-2 text-xs">
@@ -113,26 +99,24 @@ function Cards() {
         {["Total User", "Subscriptions", "Total Lead", "Experiment Count"].map((title, index) => (
           <div key={index} className="bg-white flex gap-5 py-3 items-center px-5 rounded-md shadow-md">
             <div className="bg-[#EFEFEF] rounded-full p-2 font-bold">
-            <IconFolderDown stroke={2} />
+              <IconFolderDown stroke={2} />
             </div>
-           
             <div>
               <p>{title}</p>
-              <p className="font-bold">{index === 2 ? 45 : index === 3 ? 135 : 3867}</p>
+              <p className="font-bold">{index === 2 ? 45 : index === 3 ? 135 : users.length}</p>
             </div>
           </div>
         ))}
       </div>
 
       <div className="grid md:grid-cols-2 gap-2 mb-2">
-        <ApexChart title="Subscribers & Non Subscribers" type=""/>
-        {/**/ }<ApexChart title="Non Subscribers" type="" />
+        <ApexChart title="Subscribers & Non Subscribers" type="donut" />
+        <ApexChart title="User Growth" type="bar" />
       </div>
 
       <div className="grid md:grid-cols-2 gap-2">
-
-        <TableComponent title="Recent Users" data={recentUsers} />
-        <TableComponent title="Recent Subscribers" data={recentSearches} />
+        <TableComponent title="Recent Users" data={users} />
+        <TableComponent title="Recent Subscribers" data={users.filter(u => u.plan)} />
       </div>
     </div>
   );

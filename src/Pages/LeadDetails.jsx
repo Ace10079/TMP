@@ -34,7 +34,7 @@ function LeadDetails() {
           Add Follow Up
         </button>
       </div>
-      <div className="flex gap-2 mb-2">
+      <div className="flex flex-col md:flex-row gap-2 mb-2">
         <div className="w-96 bg-white p-5 rounded-lg shadow-md">
           <h2 className="font-bold mb-4">Lead Details</h2>
           <p className="flex justify-between">

@@ -59,7 +59,7 @@ function Sidebar() {
       >
        <div className="text-xs h-screen bg-white">
        <div className="flex justify-center">
-  <img src="./logo.png" alt="Logo" className="h-25 w-30" />
+  <img src="/logo.png" alt="Logo" className="h-25 w-30" />
 </div>
           <ul className="mt-4">
             {menuItems.map((item, index) => (

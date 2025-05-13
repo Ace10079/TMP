@@ -23,7 +23,7 @@ function Header() {
   }, []);
 
   return (
-    <div className="h-20 text-sm flex justify-end p-4 gap-2">
+    <div className="h-20 text-sm flex justify-end md:p-4 gap-2">
       <div className="flex bg-white gap-2 p-2 items-center rounded-full relative">
         {/* Search Bar */}
         <div className="relative bg-[#EFEFEF] rounded-full">

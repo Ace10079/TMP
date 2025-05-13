@@ -16,9 +16,9 @@ function Login() {
   return (
     <div className="">
       {/* Header Section (Always Visible) */}
-      <div className="flex flex-col md:flex-row justify-between p-5">
+      <div className="flex gap-2 md:flex-row md:justify-between justify-center p-5">
         <img src="./logo.png" className="h-20 w-25" />
-        <p className="mt-3">Don't have an account? Register Now</p>
+        <p className="mt-3 text-center">Don't have an account? Register Now</p>
       </div>
 
       {/* Login Form (Hidden When Modal is Open) */}
