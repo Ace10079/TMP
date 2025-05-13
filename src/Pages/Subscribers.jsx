@@ -63,9 +63,9 @@ function Subscribers() {
         <div className="">
           {/* Edit Profile Form */}
           {modalType === "subscription_plan" && (
-            <div className="grid grid-cols-3 gap-5 h-[calc(100vh-210px)] overflow-y-auto mt-5">
+            <div className="grid md:grid-cols-3 gap-5 h-[calc(100vh-210px)] overflow-y-auto mt-5">
               {plans.map((plan) => (
-                <div key={plan.id} className="border bg-white  text-xl rounded shadow-lg text-center h-[60vh] flex flex-col justify-center">
+                <div key={plan.id} className="border bg-white text-xl rounded shadow-lg text-center md:h-[60vh] flex flex-col justify-center">
                   <h2 className="font-bold text-xl">{plan.name}</h2>
                   <p className="text-gray-500">
                     <span className="line-through text-xl">${plan.strikePrice}</span> ${plan.price} per month
@@ -76,7 +76,7 @@ function Subscribers() {
                       <li key={index}>{feature}</li>
                     ))}
                   </ul>
-                  <div className="flex justify-center gap-2 mt-3">
+                  <div className="flex justify-center gap-2 mt-3 mb-3">
                     <button
                       className="bg-[#151C39] text-white px-3 py-1 rounded"
                       onClick={() => {
