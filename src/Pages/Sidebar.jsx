@@ -10,15 +10,15 @@ import {
   IconWallet,
   IconMessageReport,
   IconSettings,
-  IconMenu2, // hamburger
-  IconX, // close icon
+  IconMenu2,
+  IconX,
 } from "@tabler/icons-react";
 
 function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeItem, setActiveItem] = useState("Dashboard");
-  const [isOpen, setIsOpen] = useState(true); // sidebar toggle state
+  const [isOpen, setIsOpen] = useState(true);
 
   const menuItems = [
     { name: "Dashboard", icon: <IconLayoutDashboard stroke={2} />, path: "cards" },
@@ -55,29 +55,33 @@ function Sidebar() {
       {/* Sidebar */}
       <div
         className={`bg-white h-screen fixed top-0 left-0 z-40 transform transition-all duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} w-50 md:translate-x-0 md:static`}
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} w-60 md:translate-x-0 md:static`}
       >
-       <div className="text-xs h-screen bg-white">
-       <div className="flex justify-center">
-  <img src="/logo.png" alt="Logo" className="h-25 w-30" />
-</div>
-          <ul className="mt-4">
+      <div className="h-screen overflow-y-auto bg-white">
+
+          <div className="flex justify-center py-4">
+            <img src="/logo.png" alt="Logo" className="h-20 w-24 object-contain" />
+          </div>
+          <ul className="mt-1">
             {menuItems.map((item, index) => (
-              <li key={index} className="mb-1">
+              <li key={index} className="">
                 <button
-                  className={`text-center flex items-center gap-1 px-7 py-0.5 hover:bg-orange-600 w-full ${
-                    activeItem === item.name ? "bg-orange-600 text-white" : ""
-                  }`}
+                  className={`flex items-center gap-x-3 px-6 py-2 w-full text-left transition-all duration-300 rounded-md
+                    ${
+                      activeItem === item.name
+                        ? "bg-orange-600 text-white font-semibold"
+                        : "hover:bg-orange-100 text-gray-700"
+                    }`}
                   onClick={() => handleItemClick(item.name, item.path)}
                 >
                   <span
                     className={`p-1 rounded ${
-                      activeItem === item.name ? "bg-[#151C39] text-white" : ""
+                      activeItem === item.name ? "bg-[#151C39] text-white" : "text-gray-700"
                     }`}
                   >
                     {item.icon}
                   </span>
-                  {item.name}
+                  <span className="text-sm">{item.name}</span>
                 </button>
               </li>
             ))}

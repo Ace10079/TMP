@@ -5,8 +5,13 @@ import {
   IconTrash,
   IconArrowsSort,
   IconFilter,
+  IconPlus,
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+// Top of LeadManagement.jsx
+import AddLeadModal from "./AddLeadModal";
+import EditLeadModal from "./EditLeadModal";
+import DeleteLeadModal from "./DeleteLeadModal";
 
 function LeadManagement() {
   const statusOptions = ["New", "Pending", "Converted", "Loss", "Follow Up"];
@@ -36,8 +41,14 @@ function LeadManagement() {
   return (
     <div className="h-[calc(100vh-80px)] flex flex-col text-sm">
       {/* Header Section */}
-      <div className="p-5 flex justify-between items-center relative">
-        <p className="text-lg font-semibold">Lead Management</p>
+      <div className="absolute top-2 left-65 z-50">
+        <p className="text-[#635E5E] text-lg source-sans">
+          Lead Management/Table
+        </p>
+        <p className="font-bold text-xl">Lead Management</p>
+      </div>
+
+      <div className="p-5 flex justify-end items-center relative">
         <div className="flex gap-3">
           <button
             className="px-4 py-2 bg-[#151C39] text-white rounded-md"
@@ -45,7 +56,10 @@ function LeadManagement() {
               setModalType("Add");
             }}
           >
-            Add New Lead
+            <div className="flex items-center gap-1">
+              <IconPlus size={12} />
+              <p>Add New Lead</p>
+            </div>
           </button>
           <button
             className="flex gap-1 bg-white px-4 py-2 text-black rounded-md"
@@ -93,9 +107,9 @@ function LeadManagement() {
       </div>
 
       {/* Scrollable Table Section */}
-      <div className="flex overflow-auto p-2 ">
-        <table className="w-full rounded-md ">
-          <thead className="sticky top-0 bg-white shadow-md rounded-md">
+      <div className="flex overflow-auto p-2 rounded-md">
+        <table className="w-full rounded-md">
+          <thead className="sticky top-0 bg-white shadow-md rounded-md source-sans">
             <tr>
               {[
                 "S.No",
@@ -107,25 +121,25 @@ function LeadManagement() {
                 "Assign",
                 "Action",
               ].map((heading) => (
-                <th key={heading} className="py-3 px-4 font-medium text-center">
+                <th key={heading} className="py-3 px-4 text-lg text-center">
                   <div className="flex items-center justify-center gap-1">
                     {heading}
                     <IconArrowsSort
                       size={16}
-                      className="cursor-pointer text-gray-500 mt-1"
+                      className="cursor-pointer text-[#211F1F] mt-1"
                     />
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-white text-[#8A8A8A] text-base source-sans">
             {currentLeads.map((lead, index) => (
-              <tr key={lead.id} className="border-b border-gray-600">
+              <tr key={lead.id} className="shadow-md">
                 <td className="py-3 px-4 text-center">
                   {indexOfFirstLead + index + 1}
                 </td>
-                <td className="py-3 px-4 text-center">{lead.id}</td>
+                <td className="py-5 px-4 text-center">{lead.id}</td>
                 <td className="py-3 px-4 text-center">{lead.name}</td>
                 <td className="py-3 px-4 text-center">{lead.date}</td>
                 <td className="py-3 px-4 text-center">{lead.source}</td>
@@ -212,164 +226,23 @@ function LeadManagement() {
 
       {/* Modals */}
       {modalType && (
-        <div className="fixed inset-0 flex items-center justify-center  backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-md z-50">
           <div className="bg-white p-5 rounded-lg shadow-lg w-96">
-            {/* Add Modal */}
             {modalType === "Add" && (
-              <div className="flex flex-col space-y-3">
-                <h2 className="font-bold text-xl mb-4 capitalize text-center">
-                  Add New Lead
-                </h2>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="text-center">Lead ID:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Lead ID"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Name:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Name"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Date:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Date"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Source:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Source"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Status:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Status"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Assigned To:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter Assign"
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-              </div>
+              <AddLeadModal onClose={() => setModalType(null)} />
             )}
-
-            {/* Edit Modal */}
             {modalType === "edit" && selectedLead && (
-              <div className="flex flex-col space-y-3 ">
-                <h2 className="font-bold text-xl mb-4 capitalize text-center">
-                  Edit Lead
-                </h2>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Name:</label>
-                  <input
-                    type="text"
-                    value={selectedLead.name}
-                    readOnly
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Date:</label>
-                  <input
-                    type="text"
-                    value={selectedLead.date}
-                    readOnly
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <label className="font-medium">Source:</label>
-                  <input
-                    type="text"
-                    value={selectedLead.source}
-                    readOnly
-                    className="border p-2 rounded bg-gray-100"
-                  />
-                </div>
-                <div className="flex  flex-row justify-between items-center">
-                  <label className="font-medium">Status:</label>
-                  <select
-                    defaultValue={selectedLead.status}
-                    className="w-44 border p-2 rounded"
-                  >
-                    <option>New</option>
-                    <option>Pending</option>
-                    <option>Converted</option>
-                    <option>Loss</option>
-                    <option>Follow Up</option>
-                  </select>
-                </div>
-                <div className="flex  flex-row justify-between items-center">
-                  <label className="font-medium">
-                    Assigned to Sales Person
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue={selectedLead.assign}
-                    className="border p-2 rounded"
-                  />
-                </div>
-              </div>
+              <EditLeadModal
+                lead={selectedLead}
+                onClose={() => setModalType(null)}
+              />
             )}
-
-            {/* Delete Modal */}
             {modalType === "delete" && selectedLead && (
-              <div className="flex flex-col items-center space-y-4">
-                <h2 className="font-bold text-xl mb-4 capitalize text-center">
-                  Delete Lead
-                </h2>
-                <img
-                  src="/delete.png"
-                  alt="Delete Confirmation"
-                  className="w-16 h-16"
-                />
-                <p className="text-center font-bold text-xl">Are you Sure?</p>
-                <p>Are you sure? Do you want to delete Permanently</p>
-              </div>
+              <DeleteLeadModal
+                lead={selectedLead}
+                onClose={() => setModalType(null)}
+              />
             )}
-
-            {/* Modal Buttons */}
-            <div className="flex gap-3 mt-4 justify-center">
-              <button
-                className="bg-gray-300 px-4 py-2 rounded"
-                onClick={() => setModalType(null)}
-              >
-                Close
-              </button>
-              {modalType === "edit" && (
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">
-                  Save
-                </button>
-              )}
-              {modalType === "delete" && (
-                <button className="bg-red-500 text-white px-4 py-2 rounded">
-                  Delete
-                </button>
-              )}
-              {modalType === "Add" && (
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">
-                  Save
-                </button>
-              )}
-            </div>
           </div>
         </div>
       )}
